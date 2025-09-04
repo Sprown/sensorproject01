@@ -1,10 +1,10 @@
 from pymongo.mongo_client import MongoClient
 import pandas as pd
 import json
+from src.constant import *
 
 #url
-uri="mongodb+srv://imran:TdPLW9Ad0OzpSSD2@cluster0.fv0lm61.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
+uri=MONGO_DB_URL
 #create a new client and connectt to server
 client = MongoClient(uri)
 
@@ -12,7 +12,7 @@ client = MongoClient(uri)
 DATABASE_NAME="pwskills"
 COLLECTION_NAME='waferfault'
 
-df=pd.read_csv("C:\Users\imran\Dropbox\PC\Downloads\sensorproject\notebooks\wafer_23012020_041211.csv")
+df=pd.read_csv("D:\python project\sensorproject01\notebooks\wafer_23012020_041211.csv")
 
 df=df.drop("Unnamed: 0",axis=1)
 
