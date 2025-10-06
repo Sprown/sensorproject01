@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Lint code
         run: echo "Linting repository"
@@ -31,14 +31,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Utilities
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip
+
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -46,29 +47,28 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
           IMAGE_TAG: latest
         run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
+          echo "🔧 Building Docker image..."
           docker build -t ${{ secrets.AWS_ECR_REPO_URI }}:$IMAGE_TAG .
+          echo "📤 Pushing image to Amazon ECR..."
           docker push ${{ secrets.AWS_ECR_REPO_URI }}:$IMAGE_TAG
           
-          
   Continuous-Deployment:
+    name: Continuous Deployment
     needs: build-and-push-ecr-image
     runs-on: self-hosted
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -76,21 +76,31 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
       
-      
-      - name: Pull latest images
+      - name: Pull latest image
         run: |
-         docker pull ${{ secrets.AWS_ECR_REPO_URI }}:latest
+          echo "📥 Pulling latest image from ECR..."
+          docker pull ${{ secrets.AWS_ECR_REPO_URI }}:latest
          
-                
-      # - name: Stop and remove visibility container if running
-      #   run: |
-      #    docker ps -q --filter "name=visibility" | grep -q . && docker stop visibility && docker rm -fv visibility
+      - name: Stop previous container if running
+        run: |
+          if [ "$(docker ps -q -f name=sensor)" ]; then
+            echo "🛑 Stopping old container..."
+            docker stop sensor && docker rm -f sensor
+          fi
+
       - name: Run Docker Image to serve users
         run: |
-         docker run -d -p 8080:8080 --name=sensor -e 'MONGO_DB_URL=${{ secrets.MONGO_DB_URL }}' -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' -e 'AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}' ${{ secrets.AWS_ECR_REPO_URI }}:latest
+          echo "🚀 Starting new container..."
+          docker run -d -p 8080:8080 --name=sensor \
+          -e MONGO_DB_URL='${{ secrets.MONGO_DB_URL }}' \
+          -e AWS_ACCESS_KEY_ID='${{ secrets.AWS_ACCESS_KEY_ID }}' \
+          -e AWS_SECRET_ACCESS_KEY='${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
+          -e AWS_DEFAULT_REGION='${{ secrets.AWS_DEFAULT_REGION }}' \
+          ${{ secrets.AWS_ECR_REPO_URI }}:latest
 
       - name: Clean previous images and containers
         run: |
-         docker system prune -f
+          echo "🧹 Cleaning unused images and containers..."
+          docker system prune -f
