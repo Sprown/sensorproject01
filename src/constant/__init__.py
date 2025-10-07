@@ -1,7 +1,7 @@
 import os
 
 
-AWS_S3_BUCKET_NAME = "himanshu-sensor-bucket"
+AWS_S3_BUCKET_NAME = "sprown-sensor-bucket"
 MONGO_DATABASE_NAME = "himanshu_database"
 MONGO_COLLECTION_NAME = "waferfault"
 
