@@ -1,15 +1,26 @@
-# 📄✏ Sensor Fault Detection Project
-**Brief:** In electronics, a **wafer** (also called a slice or substrate) is a thin slice of semiconductor, such as a crystalline silicon (c-Si), used for the fabrication of integrated circuits and, in photovoltaics, to manufacture solar cells. The wafer serves as the substrate(serves as foundation for contruction of other components) for microelectronic devices built in and upon the wafer. 
+# ⚙️ Sensor Fault Detection Project
 
-It undergoes many microfabrication processes, such as doping, ion implantation, etching, thin-film deposition of various materials, and photolithographic patterning. Finally, the individual microcircuits are separated by wafer dicing and packaged as an integrated circuit.
+### 📘 Overview
+In electronics, a **wafer** is a thin slice of semiconductor material (like silicon) used to manufacture **microchips** and **solar cells**.  
+During the fabrication process, wafers undergo several steps such as **doping**, **etching**, **ion implantation**, and **photolithography** to build integrated circuits.  
 
-#### Dataset is taken from Kaggle and stored in mongodb
+This project focuses on detecting **sensor faults** during the wafer manufacturing process using **Machine Learning models**.  
+It helps identify faulty wafers early, improving product quality and reducing manufacturing losses.
 
+---
 
-💿 Installing
-1. Environment setup.
+## 📂 Dataset
+- Dataset is taken from **Kaggle**.  
+- Data is stored and managed using **MongoDB** for better scalability and accessibility.
+
+---
+
+## 🧰 Installation & Setup
+
+### 1️⃣ Create Virtual Environment
+
 ```
-conda create --prefix venv python==3.8 -y
+conda create -p venv python==3.8 -y
 ```
 ```
 conda activate venv/
