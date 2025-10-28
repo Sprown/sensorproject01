@@ -10,10 +10,10 @@ from src.pipeline.train_pipeline import TraininingPipeline
 from src.pipeline.predict_pipeline import PredictionPipeline
 
 app = Flask(__name__)
-
+             
 @app.route("/")
 def home():
-    return "Welcome to my application"
+    return render_template("index.html")
 
 
 @app.route("/train")

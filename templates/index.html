@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Upload CSV | Sensor Fault Detection</title>
+  <title>Sensor Fault Detection | Himanshu Soni</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965879.png">
   <style>
     body {
@@ -13,18 +13,17 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      align-items: center;
-      justify-content: center;
       text-align: center;
     }
 
-    .frame {
+    .container {
+      margin: auto;
+      max-width: 900px;
       background: rgba(255,255,255,0.05);
+      padding: 40px 50px;
       border-radius: 20px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.6);
       backdrop-filter: blur(12px);
-      padding: 50px;
-      width: 400px;
       animation: fadeIn 1s ease;
     }
 
@@ -35,64 +34,42 @@
 
     h1 {
       color: #00ffd5;
-      margin-bottom: 20px;
-      font-size: 1.7rem;
-    }
-
-    .dropzone {
-      position: relative;
-      border: 2px dashed #00ffd5;
-      border-radius: 12px;
-      padding: 30px;
-      background-color: rgba(0, 255, 213, 0.05);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      min-height: 160px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .dropzone:hover {
-      background-color: rgba(0, 255, 213, 0.1);
-      transform: scale(1.02);
-      box-shadow: 0 0 10px #00ffd5;
-    }
-
-    .dropzone img {
-      width: 80px;
-      height: 80px;
       margin-bottom: 10px;
+      font-size: 2rem;
     }
 
-    .dropzone p {
-      color: #aaa;
-      font-size: 0.9rem;
-      margin: 0;
+    h3 {
+      color: #00aaff;
+      margin-bottom: 20px;
     }
 
-    input.upload-input {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
+    p {
+      line-height: 1.6;
+      text-align: justify;
+      color: #ddd;
+    }
+
+    .section {
+      text-align: left;
+      margin-top: 30px;
+    }
+
+    .buttons {
+      margin-top: 40px;
     }
 
     .btn {
       background: linear-gradient(90deg, #00ffd5, #00aaff);
       color: #000;
-      font-weight: 600;
-      padding: 12px 30px;
       border: none;
+      font-weight: 600;
+      padding: 12px 35px;
       border-radius: 8px;
-      margin-top: 25px;
       cursor: pointer;
-      transition: 0.3s;
-      width: 100%;
+      margin: 0 10px;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .btn:hover {
@@ -100,22 +77,9 @@
       background: linear-gradient(90deg, #00aaff, #00ffd5);
     }
 
-    .back-btn {
-      margin-top: 15px;
-      display: inline-block;
-      color: #00ffd5;
-      text-decoration: none;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    .back-btn:hover {
-      text-decoration: underline;
-      color: #00aaff;
-    }
-
     footer {
-      margin-top: 30px;
+      margin-top: auto;
+      padding: 15px;
       color: #aaa;
       font-size: 0.9rem;
     }
@@ -123,6 +87,7 @@
     footer a {
       color: #00ffd5;
       text-decoration: none;
+      font-weight: 500;
     }
 
     footer a:hover {
@@ -165,20 +130,40 @@
   </style>
 </head>
 <body>
-  <form action="/predict" method="post" enctype="multipart/form-data">
-    <div class="frame">
-      <h1>Drop your CSV file</h1>
 
-      <div class="dropzone">
-        <img src="https://cdn-icons-png.flaticon.com/512/3767/3767084.png" alt="upload icon">
-        <p>Click or drag file here to upload</p>
-        <input type="file" name="file" class="upload-input" accept=".csv" required>
-      </div>
+  <div class="container">
+    <h1>⚙️ Sensor Fault Detection Project</h1>
+    <h3>Machine Learning Based Wafer Fault Analysis</h3>
 
-      <button type="submit" class="btn" id="uploadBtn">Upload File</button>
-      <a href="/" class="back-btn">⬅ Go Back to Home</a>
+    <div class="section">
+      <h2>📘 Overview</h2>
+      <p>
+        In electronics, a <b>wafer</b> is a thin slice of semiconductor material (like silicon) used
+        to manufacture <b>microchips</b> and <b>solar cells</b>. During the fabrication process,
+        wafers undergo steps such as <b>doping</b>, <b>etching</b>, <b>ion implantation</b>, and
+        <b>photolithography</b> to build integrated circuits.
+      </p>
+
+      <p>
+        This project focuses on detecting <b>sensor faults</b> during wafer manufacturing using
+        <b>Machine Learning models</b>. It helps identify faulty wafers early, improving product quality
+        and reducing manufacturing losses.
+      </p>
     </div>
-  </form>
+
+    <div class="section">
+      <h2>📂 Dataset</h2>
+      <p>
+        - Dataset is taken from <b>Kaggle</b>.<br>
+        - Data is stored and managed using <b>MongoDB</b> for better scalability and accessibility.
+      </p>
+    </div>
+
+    <div class="buttons">
+      <a href="/train" class="btn" id="trainBtn">🚀 Train Model</a>
+      <a href="/predict" class="btn">🔍 Predict Faults</a>
+    </div>
+  </div>
 
   <footer>
     Created by <strong>Himanshu Soni</strong> |
@@ -188,17 +173,28 @@
   <!-- Loader -->
   <div id="loaderOverlay">
     <div class="spinner"></div>
-    <div id="loaderText">Predicting... Please wait</div>
+    <div id="loaderText">Model Training in Progress...</div>
   </div>
 
   <script>
-    const uploadBtn = document.getElementById("uploadBtn");
+    const trainBtn = document.getElementById("trainBtn");
     const loaderOverlay = document.getElementById("loaderOverlay");
 
-    const form = document.querySelector("form");
-    form.addEventListener("submit", () => {
+    trainBtn.addEventListener("click", function(e) {
+      e.preventDefault();
       loaderOverlay.style.display = "flex";
+      fetch("/train")
+        .then(res => res.text())
+        .then(data => {
+          loaderOverlay.style.display = "none";
+          alert("✅ " + data);
+        })
+        .catch(err => {
+          loaderOverlay.style.display = "none";
+          alert("❌ Error: " + err);
+        });
     });
   </script>
+
 </body>
 </html>
